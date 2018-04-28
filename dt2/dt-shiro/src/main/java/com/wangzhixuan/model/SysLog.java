@@ -1,5 +1,7 @@
 package com.wangzhixuan.model;
 
+import com.wangzhixuan.commons.utils.JsonUtils;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -79,4 +81,8 @@ public class SysLog implements Serializable {
 		this.createTime = createTime;
 	}
 
+	@Override
+	public String toString() {
+		return JsonUtils.toJson(this);
+	}
 }

@@ -1,11 +1,11 @@
 package com.wangzhixuan.model;
 
-import java.io.Serializable;
-import java.util.Date;
-
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.wangzhixuan.commons.utils.JsonUtils;
 import org.hibernate.validator.constraints.NotBlank;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.Serializable;
+import java.util.Date;
 
 /**
  *
@@ -107,4 +107,8 @@ public class Organization implements Serializable {
 		this.createTime = createTime;
 	}
 
+	@Override
+	public String toString() {
+		return JsonUtils.toJson(this);
+	}
 }

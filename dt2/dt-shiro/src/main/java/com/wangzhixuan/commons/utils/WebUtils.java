@@ -64,7 +64,7 @@ public class WebUtils extends org.springframework.web.util.WebUtils {
 		Cookie cookie = new Cookie(name, value);
 		cookie.setPath("/");
 		cookie.setMaxAge(maxAgeInSeconds);
-		//cookie.setHttpOnly(true);
+		cookie.setHttpOnly(true);
 		response.addCookie(cookie);
 	}
 }

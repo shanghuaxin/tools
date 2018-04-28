@@ -8,6 +8,7 @@ import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.wangzhixuan.commons.utils.JsonUtils;
 import com.wangzhixuan.model.Role;
 import com.wangzhixuan.model.User;
 
@@ -207,4 +208,8 @@ public class UserVo implements Serializable {
 		return id.equals(userId);
 	}
 
+	@Override
+	public String toString() {
+		return JsonUtils.toJson(this);
+	}
 }

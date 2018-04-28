@@ -5,6 +5,8 @@ import java.util.Enumeration;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.subject.Subject;
@@ -31,6 +33,7 @@ import com.wangzhixuan.service.ISysLogService;
 @Component
 @Order
 public class SysLogAspect {
+    private static final Logger LOGGER = LogManager.getLogger(SysLogAspect.class);
 
     @Autowired
     private ISysLogService sysLogService;
@@ -63,6 +66,7 @@ public class SysLogAspect {
 
         String strMessage = String
                 .format("[类名]:%s,[方法]:%s,[参数]:%s", strClassName, strMethodName, bfParams.toString());
+        LOGGER.info(strMessage);
         if (isWriteLog(strMethodName)) {
             try {
                 Subject currentUser = SecurityUtils.getSubject();
@@ -77,9 +81,11 @@ public class SysLogAspect {
                     if (request != null) {
                         sysLog.setClientIp(request.getRemoteAddr());
                     }
+                    LOGGER.info(sysLog.toString());
                     sysLogService.insert(sysLog);
                 }
             } catch (Exception e) {
+                LOGGER.error(e.getMessage(), e);
             }
         }
 

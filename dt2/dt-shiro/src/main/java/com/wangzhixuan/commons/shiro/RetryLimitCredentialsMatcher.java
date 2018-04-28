@@ -23,6 +23,8 @@ package com.wangzhixuan.commons.shiro;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.ExcessiveAttemptsException;
@@ -37,6 +39,7 @@ import org.springframework.util.Assert;
  * @author L.cm
  */
 public class RetryLimitCredentialsMatcher extends HashedCredentialsMatcher implements InitializingBean {
+	private final static Logger logger = LogManager.getLogger(RetryLimitCredentialsMatcher.class);
 	private final static String DEFAULT_CHACHE_NAME = "retryLimitCache";
 	
 	private final CacheManager cacheManager;
@@ -71,6 +74,7 @@ public class RetryLimitCredentialsMatcher extends HashedCredentialsMatcher imple
 		}
 		if(retryCount.incrementAndGet() > 5) {
 			//if retry count > 5 throw
+			logger.warn("username: " + username + " tried to login more than 5 times in period");  
 			throw new ExcessiveAttemptsException("用户名: " + username + " 密码连续输入错误超过5次，锁定半小时！"); 
 		} else {
 			passwordRetryCache.put(username, retryCount);

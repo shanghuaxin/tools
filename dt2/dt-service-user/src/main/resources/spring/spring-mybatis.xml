@@ -1,87 +1,97 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:aop="http://www.springframework.org/schema/aop"
-       xmlns:tx="http://www.springframework.org/schema/tx"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans
-    http://www.springframework.org/schema/beans/spring-beans.xsd
-    http://www.springframework.org/schema/aop
-    http://www.springframework.org/schema/aop/spring-aop.xsd
-    http://www.springframework.org/schema/tx
-    http://www.springframework.org/schema/tx/spring-tx.xsd">
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans  
+  http://www.springframework.org/schema/beans/spring-beans.xsd  
+  http://www.springframework.org/schema/context  
+  http://www.springframework.org/schema/context/spring-context.xsd  
+  http://www.springframework.org/schema/mvc  
+  http://www.springframework.org/schema/mvc/spring-mvc.xsd
+  http://www.springframework.org/schema/aop 
+  http://www.springframework.org/schema/aop/spring-aop.xsd
+  http://www.springframework.org/schema/tx 
+  http://www.springframework.org/schema/tx/spring-tx.xsd">
+  
+	<!-- 自动扫描 -->
+	<context:component-scan base-package="com.dingcheng.*" use-default-filters="false">
+		<context:include-filter type="annotation" expression="org.springframework.stereotype.Repository"/> 
+		<context:include-filter type="annotation" expression="org.springframework.stereotype.Service"/> 
+	 </context:component-scan>
+	
+	<!-- 获取spring上下文 的util类 -->
+	<bean id="springContextUtil" class="com.dingcheng.common.util.SpringContextUtil" />
 
-    <!-- dataSource -->
-    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
-        <property name="url" value="${db.url}" />
-        <property name="username" value="${db.username}" />
-        <property name="password" value="${db.password}" />
-        <!-- 配置监控统计拦截的filters -->
-        <property name="filters" value="mergeStat,wall,log4j2" />
-        <property name="initialSize" value="5" />
-        <property name="maxActive" value="100" />
-        <property name="minIdle" value="10" />
-        <property name="maxWait" value="60000" />
-        <property name="validationQuery" value="SELECT 'x'" />
-        <property name="testOnBorrow" value="true" />
-        <property name="testOnReturn" value="true" />
-        <property name="testWhileIdle" value="true" />
-        <property name="timeBetweenEvictionRunsMillis" value="60000" />
-        <property name="minEvictableIdleTimeMillis" value="300000" />
-        <property name="removeAbandoned" value="true" />
-        <property name="removeAbandonedTimeout" value="1800" />
-        <property name="logAbandoned" value="true" />
-    </bean>
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
+		destroy-method="close">
+		<property name="driverClassName" value="${db.driver}" />
+		<property name="url" value="${db.url}" />
+		<property name="username" value="${db.username}" />
+		<property name="password" value="${db.password}" />
+		<!-- 初始化连接大小 -->
+		<property name="initialSize" value="${db.initialSize}"></property>
+		<!-- 连接池最大数量 -->
+		<property name="maxActive" value="${db.maxActive}"></property>
+		<!-- 连接池最大空闲 -->
+		<property name="maxIdle" value="${db.maxIdle}"></property>
+		<!-- 连接池最小空闲 -->
+		<property name="minIdle" value="${db.minIdle}"></property>
+		<!-- 获取连接最大等待时间 -->
+		<property name="maxWait" value="${db.maxWait}"></property>
+		<!-- 空闲连接回收 -->
+    	<property name="timeBetweenEvictionRunsMillis" value="${db.timeBetweenEvictionRunsMillis}"/>
+    	<!-- 每次取出连接是否进行测试,如果为true,影响性能 -->
+    	<property name="testOnBorrow" value="false"/>
+    	<!-- 测试连接执行的sql -->
+		<property name="validationQuery" value="SELECT 1" />
+		<!-- 空闲时是否进行验证，检查对象是否有效，默认为false -->
+    	<property name="testWhileIdle" value="true"/>
+	</bean>
 
-    <!-- Spring整合Mybatis -->
-    <bean id="sqlSessionFactory" class="com.baomidou.mybatisplus.spring.MybatisSqlSessionFactoryBean">
-        <property name="dataSource" ref="dataSource"/>
-        <!-- 自动扫描Mapping.xml文件 -->
-        <property name="mapperLocations" value="classpath*:/sqlMapperXml/*/*.xml"></property>
-        <property name="configLocation" value="classpath:spring/mybatis-config.xml"></property>
-        <property name="typeAliasesPackage" value="com.dingcheng.*.model"/>
-        <property name="globalConfig" ref="globalConfig"/>
-        <property name="plugins">
-            <array>
-                <!-- 分页插件配置 -->
-                <bean id="paginationInterceptor" class="com.baomidou.mybatisplus.plugins.PaginationInterceptor">
-                    <property name="dialectType" value="mysql"/>
-                    <property name="optimizeType" value="aliDruid" />
-                </bean>
-            </array>
-        </property>
-    </bean>
+	<!-- spring和MyBatis完美整合，不需要mybatis的配置映射文件 -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<!-- 自动扫描mapping.xml文件 -->
+		<property name="mapperLocations" value="classpath*:com/dingcheng/**/model/mapping/*.xml"></property>
+	</bean>	
 
-    <!-- MP 全局配置 -->
-    <bean id="globalConfig" class="com.baomidou.mybatisplus.entity.GlobalConfiguration">
-        <property name="idType" value="0"/>
-        <property name="dbColumnUnderline" value="true"/>
-    </bean>
+	<!-- basedao使用 -->
+	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate"
+		scope="prototype">
+		<constructor-arg index="0" ref="sqlSessionFactory" />
+	</bean>
 
-    <!-- MyBatis 动态实现  -->
-    <bean id="mapperScannerConfigurer" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-        <!-- 对Dao 接口动态实现，需要知道接口在哪  -->
-        <property name="basePackage" value="com.dingcheng.*.dao"/>
-    </bean>
+	<bean id="restTemplate" class="org.springframework.web.client.RestTemplate" />
 
-    <!-- 事务管理 -->
-    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-        <property name="dataSource" ref="dataSource"></property>
-    </bean>
-    <!-- 事务注解 -->
-    <tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true"/>
-    <!-- 事务管理 属性 -->
-    <tx:advice id="transactionAdvice" transaction-manager="transactionManager">
-        <tx:attributes>
-            <tx:method name="select*" propagation="REQUIRED" read-only="true" />
-            <tx:method name="delete*" propagation="REQUIRED" rollback-for="Exception" />
-            <tx:method name="update*" propagation="REQUIRED" rollback-for="Exception" />
-            <tx:method name="insert*" propagation="REQUIRED" rollback-for="Exception" />
-            <tx:method name="*" propagation="REQUIRED" />
-        </tx:attributes>
-    </tx:advice>
+	<!-- (事务管理)transaction manager, use JtaTransactionManager for global tx -->
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
 
-    <!-- 配置切面 -->
-    <aop:config expose-proxy="true" proxy-target-class="true">
-        <aop:advisor advice-ref="transactionAdvice" pointcut="execution(* com.dingcheng.*.service..*.*(..))"/>
-    </aop:config>
+	<!-- set leval -->
+	<tx:advice id="txAdvice" transaction-manager="transactionManager">
+		<tx:attributes>
+			<!-- all methods starting with 'get' are read-only -->
+			<tx:method name="get*" read-only="true" />
+			<tx:method name="list*" read-only="true" />
+			<tx:method name="query*" read-only="true" />
+			<tx:method name="search*" read-only="true" />
+			<tx:method name="find*" read-only="true" />
+			<tx:method name="check*" read-only="true" />
+			<tx:method name="newLog*" propagation="NOT_SUPPORTED" />
+			<!-- other methods use the default transaction settings -->
+			<tx:method name="*" rollback-for="Exception" />	<!-- all exception rollback -->
+		</tx:attributes>
+	</tx:advice>
+
+	<!-- set class -->
+	<aop:config proxy-target-class="true">
+		<aop:pointcut id="managerOperation"
+			expression="execution(* com.dingcheng.*.service.*Service.*(..)) or execution (* com.dingcheng.*.*.service.*Service.*(..))" />
+		<aop:advisor pointcut-ref="managerOperation" advice-ref="txAdvice" />
+	</aop:config>
+
 </beans>

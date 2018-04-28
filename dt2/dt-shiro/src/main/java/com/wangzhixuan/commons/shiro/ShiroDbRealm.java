@@ -4,6 +4,8 @@ import com.wangzhixuan.model.User;
 import com.wangzhixuan.model.vo.UserVo;
 import com.wangzhixuan.service.IRoleService;
 import com.wangzhixuan.service.IUserService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authc.credential.CredentialsMatcher;
 import org.apache.shiro.authz.AuthorizationInfo;
@@ -24,6 +26,7 @@ import java.util.Set;
  * @date：2015/10/1 14:51
  */
 public class ShiroDbRealm extends AuthorizingRealm {
+    private static final Logger LOGGER = LogManager.getLogger(ShiroDbRealm.class);
 
     @Autowired private IUserService userService;
     @Autowired private IRoleService roleService;
@@ -38,6 +41,7 @@ public class ShiroDbRealm extends AuthorizingRealm {
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(
             AuthenticationToken authcToken) throws AuthenticationException {
+        LOGGER.info("Shiro开始登录认证");
         UsernamePasswordToken token = (UsernamePasswordToken) authcToken;
         UserVo uservo = new UserVo();
         uservo.setLoginName(token.getUsername());

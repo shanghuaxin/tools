@@ -1,5 +1,7 @@
 package com.wangzhixuan.model;
 
+import com.wangzhixuan.commons.utils.JsonUtils;
+
 import java.io.Serializable;
 
 /**
@@ -49,4 +51,8 @@ public class UserRole implements Serializable {
         this.roleId = roleId;
     }
 
+    @Override
+    public String toString() {
+        return JsonUtils.toJson(this);
+    }
 }

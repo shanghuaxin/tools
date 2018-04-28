@@ -3,6 +3,8 @@ package com.wangzhixuan.commons.shiro.captcha;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.shiro.cache.Cache;
 import org.apache.shiro.cache.CacheManager;
 import org.springframework.beans.factory.InitializingBean;
@@ -17,6 +19,7 @@ import com.wangzhixuan.commons.utils.WebUtils;
  *
  */
 public class DreamCaptcha implements InitializingBean {
+	private final static Logger logger = LogManager.getLogger(DreamCaptcha.class);
 	private static final String DEFAULT_COOKIE_NAME = "dream-captcha";
 	private final static String DEFAULT_CHACHE_NAME = "dreamCaptchaCache";
 	private final static int DEFAULT_MAX_AGE = -1; // cookie超时默认为session会话状态
@@ -98,6 +101,9 @@ public class DreamCaptcha implements InitializingBean {
 	 * @return 验证通过返回 true, 否则返回 false
 	 */
 	public boolean validate(HttpServletRequest request, HttpServletResponse response, String userInputCaptcha) {
+		if (logger.isDebugEnabled()) {
+			logger.debug("validate captcha userInputCaptcha is " + userInputCaptcha);
+		}
 		String cookieValue = WebUtils.getCookieValue(request, cookieName);
 		if (StringUtils.isBlank(cookieValue)) {
 			return false;

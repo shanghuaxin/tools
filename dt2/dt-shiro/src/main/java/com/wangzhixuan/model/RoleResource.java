@@ -1,5 +1,7 @@
 package com.wangzhixuan.model;
 
+import com.wangzhixuan.commons.utils.JsonUtils;
+
 import java.io.Serializable;
 
 /**
@@ -45,4 +47,8 @@ public class RoleResource implements Serializable {
 		this.resourceId = resourceId;
 	}
 
+	@Override
+	public String toString() {
+		return JsonUtils.toJson(this);
+	}
 }

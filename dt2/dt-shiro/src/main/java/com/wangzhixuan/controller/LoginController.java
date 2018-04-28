@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.wangzhixuan.commons.base.BaseController;
+import com.wangzhixuan.commons.csrf.CsrfToken;
 import com.wangzhixuan.commons.shiro.captcha.DreamCaptcha;
 import com.wangzhixuan.commons.utils.StringUtils;
 
@@ -56,7 +57,9 @@ public class LoginController extends BaseController {
      * @return {String}
      */
     @GetMapping("/login")
+    @CsrfToken(create = true)
     public String login() {
+        logger.info("GET请求登录");
         if (SecurityUtils.getSubject().isAuthenticated()) {
             return "redirect:/index";
         }
@@ -71,10 +74,12 @@ public class LoginController extends BaseController {
      * @return {Object}
      */
     @PostMapping("/login")
+    @CsrfToken(remove = true)
     @ResponseBody
     public Object loginPost(HttpServletRequest request, HttpServletResponse response,
             String username, String password, String captcha, 
             @RequestParam(value = "rememberMe", defaultValue = "0") Integer rememberMe) {
+        logger.info("POST请求登录");
         // 改为全部抛出异常，避免ajax csrf token被刷新
         if (StringUtils.isBlank(username)) {
             throw new RuntimeException("用户名不能为空");
@@ -125,6 +130,7 @@ public class LoginController extends BaseController {
     @PostMapping("/logout")
     @ResponseBody
     public Object logout() {
+        logger.info("登出");
         Subject subject = SecurityUtils.getSubject();
         subject.logout();
         return renderSuccess();

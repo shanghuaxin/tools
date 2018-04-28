@@ -5,6 +5,8 @@ import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.ModelAndView;
@@ -16,6 +18,7 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
  * @author L.cm
  */
 public class CsrfInterceptor extends HandlerInterceptorAdapter {
+	private static final Logger logger = LogManager.getLogger(CsrfInterceptor.class);
 	
 	@Autowired 
 	private CsrfTokenRepository csrfTokenRepository;
@@ -34,6 +37,7 @@ public class CsrfInterceptor extends HandlerInterceptorAdapter {
 		}
 		// create、remove同时为true时异常
 		if (csrfToken.create() && csrfToken.remove()) {
+			logger.error("CsrfToken attr create and remove can Not at the same time to true!");
 			return renderError(request, response, "CsrfToken attr create and remove can Not at the same time to true!");
 		}
 		// 创建

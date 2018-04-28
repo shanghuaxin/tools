@@ -1,8 +1,9 @@
 package com.wangzhixuan.model;
 
-import java.io.Serializable;
-
+import com.wangzhixuan.commons.utils.JsonUtils;
 import org.hibernate.validator.constraints.NotBlank;
+
+import java.io.Serializable;
 
 /**
  *
@@ -69,4 +70,8 @@ public class Role implements Serializable {
 		this.status = status;
 	}
 
+	@Override
+	public String toString() {
+		return JsonUtils.toJson(this);
+	}
 }

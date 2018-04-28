@@ -51,14 +51,33 @@
             <bean class="org.springframework.http.converter.ByteArrayHttpMessageConverter"/>
             <bean class="org.springframework.http.converter.ResourceHttpMessageConverter"/>
             <bean class="org.springframework.http.converter.ResourceRegionHttpMessageConverter"/>
+            <!-- json -->
+            <ref bean="jacksonMessageConverter" />
         </mvc:message-converters>
     </mvc:annotation-driven>
+    
+    <bean id="jacksonMessageConverter" class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+        <property name="supportedMediaTypes">
+            <list>
+                <value>text/html;charset=UTF-8</value>
+                <value>application/json;charset=UTF-8</value>
+            </list>
+        </property>
+        <property name="objectMapper" ref="jacksonObjectMapper" />
+    </bean>
     
     <!-- hibernate-Validator -->
     <bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">
         <property name="providerClass" value="org.hibernate.validator.HibernateValidator"/>
     </bean>
     <bean class="org.springframework.validation.beanvalidation.MethodValidationPostProcessor"/>
+    
+    <!-- ueditor -->
+    <bean id="ueditorManager" class="net.dreamlu.module.ueditor.UeditorManager"/>
+    <bean class="net.dreamlu.module.ueditor.UeditorService">
+        <property name="ueditorManager" ref="ueditorManager"/>
+    </bean>
+    <!-- ueditor -->
     
     <!-- 使用spring servlet3.0 默认上传 -->
     <bean id="multipartResolver" class="org.springframework.web.multipart.support.StandardServletMultipartResolver"/>
