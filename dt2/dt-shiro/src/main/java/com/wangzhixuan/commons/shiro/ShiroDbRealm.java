@@ -2,8 +2,8 @@ package com.wangzhixuan.commons.shiro;
 
 import com.wangzhixuan.model.User;
 import com.wangzhixuan.model.vo.UserVo;
-import com.wangzhixuan.service.IRoleService;
-import com.wangzhixuan.service.IUserService;
+import com.wangzhixuan.service.RoleService;
+import com.wangzhixuan.service.UserService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.shiro.authc.*;
@@ -28,8 +28,8 @@ import java.util.Set;
 public class ShiroDbRealm extends AuthorizingRealm {
     private static final Logger LOGGER = LogManager.getLogger(ShiroDbRealm.class);
 
-    @Autowired private IUserService userService;
-    @Autowired private IRoleService roleService;
+    @Autowired private UserService userService;
+    @Autowired private RoleService roleService;
     
     public ShiroDbRealm(CacheManager cacheManager, CredentialsMatcher matcher) {
         super(cacheManager, matcher);

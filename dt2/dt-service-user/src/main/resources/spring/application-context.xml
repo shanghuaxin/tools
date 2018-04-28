@@ -2,8 +2,11 @@
 <beans default-init-method="init" default-destroy-method="destroy"
 	xmlns="http://www.springframework.org/schema/beans" xmlns:task="http://www.springframework.org/schema/task"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans 
   		http://www.springframework.org/schema/beans/spring-beans.xsd
+  		http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd
   		http://www.springframework.org/schema/task
         http://www.springframework.org/schema/task/spring-task.xsd">
 
@@ -17,8 +20,12 @@
 			</list>
 		</property>
 	</bean>
+	
+	<context:annotation-config/>
+	<!-- 扫描service -->
+    <context:component-scan base-package="com.wangzhixuan.service"/>
 
 	<import resource="classpath:spring/spring-mybatis.xml" />
 	<import resource="classpath:spring/dubbo-provider.xml" />
-	<import resource="classpath:xml/redis.xml" />
+	<!-- <import resource="classpath:xml/redis.xml" /> -->
 </beans>

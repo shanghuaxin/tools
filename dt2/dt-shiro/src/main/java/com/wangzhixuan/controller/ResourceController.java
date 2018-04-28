@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.wangzhixuan.commons.base.BaseController;
 import com.wangzhixuan.commons.shiro.ShiroUser;
 import com.wangzhixuan.model.Resource;
-import com.wangzhixuan.service.IResourceService;
+import com.wangzhixuan.service.ResourceService;
 
 /**
  * @description：资源管理
@@ -27,7 +27,7 @@ import com.wangzhixuan.service.IResourceService;
 public class ResourceController extends BaseController {
 
     @Autowired
-    private IResourceService resourceService;
+    private ResourceService resourceService;
 
     /**
      * 菜单树

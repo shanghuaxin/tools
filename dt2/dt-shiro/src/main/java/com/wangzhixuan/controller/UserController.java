@@ -23,7 +23,7 @@ import com.wangzhixuan.commons.utils.StringUtils;
 import com.wangzhixuan.model.Role;
 import com.wangzhixuan.model.User;
 import com.wangzhixuan.model.vo.UserVo;
-import com.wangzhixuan.service.IUserService;
+import com.wangzhixuan.service.UserService;
 
 /**
  * @description：用户管理
@@ -34,7 +34,7 @@ import com.wangzhixuan.service.IUserService;
 @RequestMapping("/user")
 public class UserController extends BaseController {
     @Autowired
-    private IUserService userService;
+    private UserService userService;
     @Autowired
     private PasswordHash passwordHash;
 
@@ -77,7 +77,7 @@ public class UserController extends BaseController {
             condition.put("endTime", userVo.getCreatedateEnd());
         }
         pageInfo.setCondition(condition);
-        userService.selectDataGrid(pageInfo);
+        pageInfo = userService.selectDataGrid(pageInfo);
         return pageInfo;
     }
 

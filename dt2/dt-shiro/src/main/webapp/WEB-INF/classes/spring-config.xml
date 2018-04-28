@@ -15,6 +15,8 @@
         <property name="locations">
             <list>
                 <value>classpath*:config/database.properties</value>
+                <value>classpath:config/activemq.properties</value>
+				<value>classpath:config/jedis.properties</value>
             </list>
         </property>
     </bean>
@@ -25,7 +27,11 @@
     <!-- 扫描service -->
     <context:component-scan base-package="com.wangzhixuan.service"/>
 
-    <import resource="classpath:spring/spring-mybatis.xml"/>
+    <!-- <import resource="classpath:spring/spring-mybatis.xml"/> -->
     <import resource="classpath:spring/spring-ehcache.xml"/>
     <import resource="classpath:spring/spring-shiro.xml"/>
+    
+	<import resource="classpath:spring/dubbo-constumer.xml" />
+	<!-- <import resource="classpath:xml/redis.xml" />
+	<import resource="classpath:xml/activemq.xml" /> -->
 </beans>

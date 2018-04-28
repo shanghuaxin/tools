@@ -13,7 +13,6 @@
 		<module>dt-common</module>
 		<module>dt-api-user</module>
 		<module>dt-service-user</module>
-		<module>dt-web-user</module>
 		<module>dt-shiro</module>
 	</modules>
 

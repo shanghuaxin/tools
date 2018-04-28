@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.wangzhixuan.commons.result.PageInfo;
-import com.wangzhixuan.service.ISysLogService;
+import com.wangzhixuan.service.SysLogService;
 
 /**
  * @description：日志管理
@@ -20,7 +20,7 @@ import com.wangzhixuan.service.ISysLogService;
 @RequestMapping("/sysLog")
 public class SysLogController {
     @Autowired
-    private ISysLogService sysLogService;
+    private SysLogService sysLogService;
 
     @GetMapping("/manager")
     public String manager() {
@@ -33,7 +33,7 @@ public class SysLogController {
             @RequestParam(value = "sort", defaultValue = "create_time") String sort, 
             @RequestParam(value = "order", defaultValue = "DESC") String order) {
         PageInfo pageInfo = new PageInfo(page, rows, sort, order);
-        sysLogService.selectDataGrid(pageInfo);
+        pageInfo = sysLogService.selectDataGrid(pageInfo);
         return pageInfo;
     }
 }

@@ -19,5 +19,11 @@
 	<!-- 声明需要暴露的服务接口 -->
 	<dubbo:provider delay="-1" timeout="10000" retries="0"/><!-- 全局超时,重试机制 -->
 	
-	<dubbo:service interface="com.dingcheng.user.service.UserService" ref="userService" />
+	<dubbo:service ref="organizationService" interface="com.wangzhixuan.service.OrganizationService" />
+    <dubbo:service ref="resourceService" interface="com.wangzhixuan.service.ResourceService" />
+    <dubbo:service ref="roleResourceService" interface="com.wangzhixuan.service.RoleResourceService" />
+    <dubbo:service ref="roleService" interface="com.wangzhixuan.service.RoleService" />
+    <dubbo:service ref="sysLogService" interface="com.wangzhixuan.service.SysLogService" />
+    <dubbo:service ref="userRoleService" interface="com.wangzhixuan.service.UserRoleService" />
+    <dubbo:service ref="userService" interface="com.wangzhixuan.service.UserService" />
 </beans>

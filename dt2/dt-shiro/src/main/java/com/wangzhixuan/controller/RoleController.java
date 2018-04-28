@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.wangzhixuan.commons.base.BaseController;
 import com.wangzhixuan.commons.result.PageInfo;
 import com.wangzhixuan.model.Role;
-import com.wangzhixuan.service.IRoleService;
+import com.wangzhixuan.service.RoleService;
 
 /**
  * @description：权限管理
@@ -28,7 +28,7 @@ import com.wangzhixuan.service.IRoleService;
 public class RoleController extends BaseController {
 
     @Autowired
-    private IRoleService roleService;
+    private RoleService roleService;
 
     /**
      * 权限管理页
@@ -53,7 +53,7 @@ public class RoleController extends BaseController {
     @ResponseBody
     public Object dataGrid(Integer page, Integer rows, String sort, String order) {
         PageInfo pageInfo = new PageInfo(page, rows, sort, order);
-        roleService.selectDataGrid(pageInfo);
+        pageInfo = roleService.selectDataGrid(pageInfo);
         return pageInfo;
     }
 

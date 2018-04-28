@@ -22,7 +22,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.wangzhixuan.commons.utils.StringUtils;
 import com.wangzhixuan.model.SysLog;
-import com.wangzhixuan.service.ISysLogService;
+import com.wangzhixuan.service.SysLogService;
 
 /**
  * @description：AOP 日志
@@ -36,7 +36,7 @@ public class SysLogAspect {
     private static final Logger LOGGER = LogManager.getLogger(SysLogAspect.class);
 
     @Autowired
-    private ISysLogService sysLogService;
+    private SysLogService sysLogService;
 
     @Pointcut("within(@org.springframework.stereotype.Controller *)")
     public void cutController() {}

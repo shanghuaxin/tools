@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.wangzhixuan.commons.base.BaseController;
 import com.wangzhixuan.model.Organization;
-import com.wangzhixuan.service.IOrganizationService;
+import com.wangzhixuan.service.OrganizationService;
 
 /**
  * @description：部门管理
@@ -26,7 +26,7 @@ import com.wangzhixuan.service.IOrganizationService;
 public class OrganizationController extends BaseController {
 
     @Autowired
-    private IOrganizationService organizationService;
+    private OrganizationService organizationService;
 
     /**
      * 部门管理主页
