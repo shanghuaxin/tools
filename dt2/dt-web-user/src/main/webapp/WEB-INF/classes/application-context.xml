@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<beans default-init-method="init" default-destroy-method="destroy"
+	xmlns="http://www.springframework.org/schema/beans" xmlns:task="http://www.springframework.org/schema/task"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+  		http://www.springframework.org/schema/beans/spring-beans.xsd
+  		http://www.springframework.org/schema/task
+        http://www.springframework.org/schema/task/spring-task.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context-3.2.xsd">
+
+	<bean id="propertyConfigurer"
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<value>classpath:config/activemq.properties</value>
+				<value>classpath:config/jedis.properties</value>
+			</list>
+		</property>
+	</bean>
+	
+	<!-- 获取spring上下文 的util类 -->
+	<bean id="springContextUtil" class="com.dingcheng.common.util.SpringContextUtil" />
+	
+	<import resource="classpath:spring-mvc.xml" />
+	<import resource="classpath:dubbo-constumer.xml" />
+	<import resource="classpath:xml/redis.xml" />
+	<import resource="classpath:xml/activemq.xml" />
+</beans>

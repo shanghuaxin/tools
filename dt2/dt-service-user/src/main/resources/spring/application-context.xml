@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<beans default-init-method="init" default-destroy-method="destroy"
+	xmlns="http://www.springframework.org/schema/beans" xmlns:task="http://www.springframework.org/schema/task"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+  		http://www.springframework.org/schema/beans/spring-beans.xsd
+  		http://www.springframework.org/schema/task
+        http://www.springframework.org/schema/task/spring-task.xsd">
+
+	<!-- 将多个配置文件读取到容器中，交给Spring管理 -->
+	<bean id="propertyConfigurer"
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<value>classpath:config/database.properties</value>
+				<value>classpath:config/jedis.properties</value>
+			</list>
+		</property>
+	</bean>
+
+	<import resource="classpath:spring/spring-mybatis.xml" />
+	<import resource="classpath:spring/dubbo-provider.xml" />
+	<import resource="classpath:xml/redis.xml" />
+</beans>

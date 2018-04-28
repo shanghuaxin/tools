@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.dingcheng.user.model.User">
+
+	<resultMap id="result" type="com.dingcheng.user.model.User">
+            <id property="id" column="id" jdbcType="INTEGER" />
+            <result property="loginName" column="loginName" jdbcType="VARCHAR" />
+            <result property="password" column="password" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<sql id="base_field">
+        id,loginName,password
+	</sql>
+	
+	<sql id="other-condition">
+            <if test= "loginName != null ">	and loginName = #{loginName,jdbcType=VARCHAR }</if>
+            <if test= "password != null ">	and password = #{password,jdbcType=VARCHAR }</if>
+ 	</sql>
+ 	
+ 	<sql id="like-condition">
+            <if test= "loginName != null ">	and loginName like "%"#{loginName}"%"</if>
+            <if test= "password != null ">	and password like "%"#{password}"%"</if>
+ 	</sql>
+	
+	<sql id="selectByMapSQL">
+		select
+		<include refid="base_field" />
+		from user
+		<choose>
+		    <when test="findBy != null">
+		      	<where>
+					<include refid="other-condition" />
+				</where>
+		    </when>
+		    <when test="findByLike != null">
+		      	<where>
+					<include refid="like-condition" />
+				</where>
+		    </when>
+		</choose>
+		<if test="sortName != null">
+			order by ${sortName} ${sortBy}
+		</if>
+	</sql>
+	
+	<select id="selectByMap" resultMap="result" >
+		<include refid="selectByMapSQL" />
+	</select>
+	
+	<select id="select" resultMap="result" parameterType="java.lang.Integer">
+		select
+		<include refid="base_field" />
+		from user  
+		<where>
+			<if test="_parameter != null">
+				id = #{id,jdbcType=INTEGER}
+			</if>
+		</where>
+	</select>
+	
+	<insert id="insert" parameterType="com.dingcheng.user.model.User" useGeneratedKeys="true" keyProperty="id">
+        insert into user( id,loginName,password) values (#{id,jdbcType=INTEGER},#{loginName,jdbcType=VARCHAR},#{password,jdbcType=VARCHAR})
+	</insert>
+
+	<update id="update" parameterType="com.dingcheng.user.model.User">
+        update user set loginName=#{loginName,jdbcType=VARCHAR},password=#{password,jdbcType=VARCHAR} where id=#{id,jdbcType=INTEGER}
+	</update>	
+	
+	<delete id="deleteByPrimaryKey">
+		delete from user where id = #{id,jdbcType=INTEGER}
+	</delete>	
+
+	<delete id="delete" parameterType="com.dingcheng.user.model.User">
+		delete from user
+		<where>
+			<if test="id != null">
+				id = #{id,jdbcType=INTEGER}
+			</if>
+			<include refid="other-condition" />
+		</where>
+	</delete>	
+		
+</mapper>
+
